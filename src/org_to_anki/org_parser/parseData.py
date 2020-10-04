@@ -46,8 +46,13 @@ def _loadFile(filePath):
 
 def _formatFile(filePath):# (filePath: str):
 
+    from html import escape
+
     with open(filePath, mode="r", encoding="utf-8") as file:
         data = file.read().split('\n')
+
+        # escape HTML special chars
+        data = [escape(line) for line in data]
 
     return data
 
