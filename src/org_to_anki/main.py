@@ -1,21 +1,14 @@
 #!/usr/bin/env python3
 # Script to parse differnet formated org files and upload them to Anki
 import sys
+import os
 
 from .org_parser import parseData
 from .ankiConnectWrapper.AnkiConnector import AnkiConnector
 from .ankiConnectWrapper import AnkiPluginConnector
 from . import config
 
-
 def parseAndUploadOrgFile(filePath=None, embedded=False):
-
-    # debugMode = False
-    # for arg in sys.argv:
-    #     if arg == "-d":
-    #         debugMode = True
-    #         sys.argv.remove(arg)
-
 
     if (filePath == None and embedded == True):
         raise Exception("No file path was given while running in embedded mode.")
@@ -25,7 +18,6 @@ def parseAndUploadOrgFile(filePath=None, embedded=False):
     if "~" in filePath:
         filePath = filePath.replace("~", config.homePath)
 
-    print("file is ", filePath)
     _parseAndUpload(filePath, embedded)
 
 def _getUploadFilePath():
@@ -44,13 +36,15 @@ def _parseAndUpload(filePath, embedded=False):
 
     deck = parseData.parse(filePath)
 
+    # Use the parent directory as the name of the parent deck
+    parent_dir = os.path.abspath(filePath).split(os.sep)[-2]
+
     if (embedded == False):
-        connector = AnkiConnector()
+        connector = AnkiConnector(defaultDeck=parent_dir)
     else:
-        connector = AnkiPluginConnector.AnkiPluginConnector()
+        connector = AnkiPluginConnector.AnkiPluginConnector(
+                defaultDeck=parent_dir)
     connector.uploadNewDeck(deck)
 
-
 if __name__ == "__main__":
-    print("test")
-    # parseAndUploadOrgFile("testFile")
+    parseAndUploadOrgFile()
