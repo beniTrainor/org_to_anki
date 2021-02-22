@@ -6,6 +6,7 @@ from .. import config
 import os
 import re
 import hashlib
+import html
 
 class DeckBuilderUtils:
 
@@ -74,6 +75,10 @@ class DeckBuilderUtils:
             else:
                 print("Could not parse image from line: {}".format(answerLine.encode("utf-8")))
         
+
+        if re.match(".*[<>&]+", answerLine):
+            answerLine = html.escape(answerLine)
+
         return answerLine
     
     def buildImageLine(self, imagePath, paramters={}):
