@@ -64,6 +64,8 @@ class AnkiQuestionFactory:
     # Should return an Question object
     def buildQuestion(self):
 
+        from html import escape
+
         newQuestion = AnkiQuestion()
         self.questionsCreated += 1
 
@@ -71,6 +73,7 @@ class AnkiQuestionFactory:
         for line in self.currentQuestions:
             line = self.utils.removeAsterisk(line)
             line = self.utils.formatLine(line)
+            line = escape(line)
             line = self.utils.parseAnswerLine(line, self.filePath, newQuestion)
             newQuestion.addQuestion(line)
 

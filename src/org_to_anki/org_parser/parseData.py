@@ -50,5 +50,3 @@ def _formatFile(filePath):# (filePath: str):
         data = file.read().split('\n')
 
     return data
-
-
