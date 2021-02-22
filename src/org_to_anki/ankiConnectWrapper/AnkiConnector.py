@@ -17,7 +17,7 @@ class AnkiConnector:
         self.oldDefaulDeck = defaultDeck
         self.currentDecks = []
         self.connector = AnkiConnectorUtils(self.url)
-        self.AnkiNoteBuilder = AnkiNoteBuilder()
+        self.AnkiNoteBuilder = AnkiNoteBuilder(defaultDeck=self.defaultDeck)
 
     def uploadNewDeck(self, deck): # (AnkiDeck)
 
